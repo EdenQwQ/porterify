@@ -4,7 +4,7 @@
 
 ## Usage
 
-Install `python` and `pip`. Then install the dependencies by running `pip install -r requirements.txt`.
+Install `python`, `pip` and `ImageMagick`. Then install the dependencies by running `pip install -r requirements.txt`.
 
 Check the usage by running `python porterify.py --help`.
 

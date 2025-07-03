@@ -14,24 +14,27 @@
       ];
       perSystem =
         { pkgs, ... }:
+        let
+          python = pkgs.python312;
+          pythonEnv = python.withPackages (
+            ps: with ps; [
+              wand
+            ]
+          );
+        in
         {
-          devShells = {
-            default =
-              let
-                python = pkgs.python312;
-              in
-              pkgs.mkShellNoCC {
-                buildInputs = [
-                  (python.withPackages (
-                    ps: with ps; [
-                      wand
-                    ]
-                  ))
-                ];
-                shellHook = ''
-                  fish
-                '';
-              };
+          devShells.default = pkgs.mkShellNoCC {
+            buildInputs = [
+              pythonEnv
+            ];
+            shellHook = ''
+              fish
+            '';
+          };
+
+          packages = rec {
+            default = porterify;
+            porterify = pkgs.writeShellScriptBin "porterify" ''${pythonEnv}/bin/python ${./porterify.py}'';
           };
           treefmt = {
             projectRootFile = "flake.nix";
